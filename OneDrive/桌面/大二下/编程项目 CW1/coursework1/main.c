@@ -6,3 +6,4 @@ struct node
 	Book book;
 	struct node* next;
 }nbook;
+
