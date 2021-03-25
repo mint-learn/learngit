@@ -1,28 +1,44 @@
-#ifndef BOOK_MANAGEMENT_GUARD__H 
-#define BOOK_MANAGEMENT_GUARD__H
 
+#include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
+#include "book_management.h"
 
 /*You can extend the structs (Book and BookArray) defined in this head file;
   However, you may not change the function prototypes. 
   You are also free to add additional head files and data structures as needed. 
 */
 
+extern 	struct Book* head_book; 
+typedef enum __bool { false = 0, true = 1, } bool;
 
-typedef struct _Book {
-	    unsigned int id; //Book ID
-		char *title; //book title
-		char *authors; //comma separated list of authors
-		unsigned int year; // year of publication
-		unsigned int copies; //number of copies the library has
-}Book;
-
-typedef struct _BookArray {
-	 Book* array; // pointer to array (or linked list) of struct Book.
-	 unsigned int length; // number of elements in the (Book*) array 
-}BookArray;
-
-
+Book* Insert_book(struct Book *head_book, Book *new_book){
+	Book *p, *q;
+	p = q = head_book;
+	
+	if(head_book == NULL){//¿ÕÁ´±í 
+		head_book = new_book;
+		new_book->next = NULL;
+	}
+	else{
+		while((new_book->id > p->id) && (p->next != NULL)){
+			q = p;
+			p = p->next;
+		}
+		if(new_book->id <= p->id){
+			new_book->next = p;
+			if(head_book == p)
+				head_book = new_book;
+			else
+				q->next = new_book;
+		}
+		else{
+			p->next = new_book;
+			new_book->next = NULL;
+		}
+	}
+	return head_book;
+};
 //saves the database of books in the specified file
 //returns 0 if books were stored correctly, or an error code otherwise
 int store_books(FILE *file);
@@ -42,12 +58,12 @@ int add_book(Book book);
 
 int add_book(Book book)
 {
-	struct nbook *head_nbook, *p_nbook;
+	Book *p_book;
 	int id, year, copies, tag;
 	char title[20], authors[20];
-	int size_nbook = sizeof(struct nbook);
+	int size_book = sizeof(book);
 	
-	head_nbook = NULL;
+	head_book = NULL;
 	printf("Please type in the book ID:");
 	scanf("%d", &id);
 	printf("Please type in the book title:");
@@ -60,13 +76,13 @@ int add_book(Book book)
     scanf("%d", &copies);
     printf("\n");
     while(true){
-    	p_nbook=(struct nbook *)malloc(size_nbook);
-    	strcpy(p_nbook->book->title, title);
-    	p_nbook->book->id = id;
-    	p_nbook->book->year = year;
-    	p_nbook->book->copies = copies;
-    	strcpy(p_nbook->book->authors, authors);
-    	head_nbook = Insert_nbook(head_nbook, p_nbook);
+    	p_book=(Book *)malloc(size_book);
+    	strcpy(p_book->title , title);
+    	p_book->id = id;
+    	p_book->year = year;
+    	p_book->copies = copies;
+    	strcpy(p_book->authors, authors);
+    	head_book = Insert_book(head_book, p_book);
     	printf("Type in '1' to keep going, or type any key to exit.");
     	scanf("%d, &tag");
     	if(tag != 1){
@@ -87,33 +103,7 @@ int add_book(Book book)
     return 0;
 };
 
-struct nbook *Insert_nbook(struct nbook *head_nbook, struct nbook *new_nbook){
-	struct nbook *p, *q;
-	p = q = head_nbook;
-	
-	if(head_nbook == NULL){//¿ÕÁ´±í 
-		head_nbook = new_nbook;
-		new_nbook->next = NULL;
-	}
-	else{
-		while((new_nbook->book->id > p->book->id) && (p->next != NULL)){
-			q = p;
-			p = p->next;
-		}
-		if(new_nbook->book->id <= p->book->id){
-			new_nbook->next = p;
-			if(head_nbook == p)
-				head_nbook = new_nbook;
-			else
-				q->next = new_nbook;
-		}
-		else{
-			p->next = new_nbook;
-			new_nbook->next = NULL;
-		}
-	}
-	return head_nbook;
-};
+
 
 //removes a book from the library
 //returns 0 if the book could be successfully removed, or an error code otherwise.
@@ -122,16 +112,16 @@ int remove_book(Book book);
 int remove_book(Book book)
 {
 	bool flag = true;
-	struct nbook *p, *q;
-	p = q = head_nbook;
+	Book *p, *q;
+	p = q = head_book;
 	
-	while(p->book->id != book->id &&p->next != NULL){
+	while(p->id != book.id &&p->next != NULL){
 		q = p;
 		p = p->next;
 	}
-	if(p->book->id == book->id){
-		if(p == head_nbook){
-			head_nbook = p->next;
+	if(p->id == book.id){
+		if(p == head_book){
+			head_book = p->next;
 		}
 		
 		free(p);
@@ -150,30 +140,31 @@ int remove_book(Book book)
 //provided title can be found. The length of the array is also recorded 
 //in the returned structure, with 0 in case
 //array is the null pointer.
-BookArray find_book_by_title (const char *title){
-	struct BookArray *ptr_nbook = head_book;
-	int flag = 0;
-	while(ptr_nbook != NULL)
+struct BookArray *find_book_by_title (const char *title){
+	BookArray *ptr_book;
+	ptr_book->array = head_book;
+	ptr_book->length = 0;
+	while(ptr_book->array != NULL)
 	{
-		if(strcmp(ptr_nbook->array->title, title) == 0){
-			printf("book ID:", ptr_nbook->array->id);
-			printf("book title:", ptr_nbook->array->title);
-			printf("comma separated list of authors:", ptr_nbook->array->authors);
-			printf("year of publication:", ptr_nbook->array->year);
-			printf("number of copies:", ptr_nbook->array->copies);
+		if(strcmp(ptr_book->array->title, title) == 0){
+			printf("book ID:", ptr_book->array->id);
+			printf("book title:", ptr_book->array->title);
+			printf("comma separated list of authors:", ptr_book->array->authors);
+			printf("year of publication:", ptr_book->array->year);
+			printf("number of copies:", ptr_book->array->copies);
 			printf("\n");
-			flag++;
+			ptr_book->length++;
 		}
-		if(flag > 0)
+		if(ptr_book->length > 0)
 		{
 			break;
 		}
-		ptr_nbook = ptr_nbook->array//->next;
+		ptr_book->array = ptr_book->array->next;
 	}
-	if(flag == 0){
+	if(ptr_book->length == 0){
 		printf("Error: There's no such book in the libiary.");
 	}
-	return 0;
+	return ptr_book;
 } 
 
 
@@ -181,13 +172,62 @@ BookArray find_book_by_title (const char *title){
 //returns a BookArray structure, where the field "array" is a newly allocated array of books, or null if no book with the 
 //provided title can be found. The length of the array is also recorded in the returned structure, with 0 in case
 //array is the null pointer.
-BookArray find_book_by_author (const char *author);
+struct BookArray *find_book_by_author (const char *author){
+	Book *found_book, *p_book;
+	found_book = head_book;
+	BookArray *find_book;
+	find_book->array = head_book;
+	find_book->length = 0;
+	while(p_book != NULL)
+	{
+		if(strcmp(p_book->authors, author)){
+			found_book->id = p_book->id;
+			found_book->copies = p_book->copies;
+			found_book->year = p_book->year;
+			strcpy(found_book->title, p_book->title);
+			strcpy(found_book->authors, p_book->authors);
+			find_book = Insert_book(find_book->array, found_book);
+			find_book->length++;
+		}
+		p_book = p_book->next;
+		
+	}
+	if(find_book->length == 0){
+		printf("Error: There's no such book in the libiary.");
+	}
+	return find_book;
+} 
+
 
 //finds books published in the given year.
 //returns a BookArray structure, where the field "array" is a newly allocated array of books, or null if no book with the 
 //provided title can be found. The length of the array is also recorded in the returned structure, with 0 in case
 //array is the null pointer.
-BookArray find_book_by_year (unsigned int year);
+struct BookArray *find_book_by_year (unsigned int year){
+	Book *found_book, *p_book;
+	found_book = head_book;
+	BookArray *find_book;
+	find_book->array = head_book;
+	find_book->length = 0;
+	while(p_book != NULL)
+	{
+		if(p_book->year == year){
+			found_book->id = p_book->id;
+			found_book->copies = p_book->copies;
+			found_book->year = p_book->year;
+			strcpy(found_book->title, p_book->title);
+			strcpy(found_book->authors, p_book->authors);
+			find_book = Insert_book(find_book->array, found_book);
+			find_book->length++;
+		}
+		p_book = p_book->next;
+		
+	}
+	if(find_book->length == 0){
+		printf("Error: There's no such book in the libiary.");
+	}
+	return find_book;
+} 
 
 
-#endif
+
