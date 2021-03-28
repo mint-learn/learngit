@@ -1,26 +1,26 @@
-##ifndef STUDENT_GUARD__H 
-#define STUDENT_GUARD__H
+#ifndef STUDENT_GUARDS__H 
+#define STUDENT_GUARDS__H
 #include <stdio.h>
 typedef struct Student {
-	unsigned int id;
-	unsigned int password;
+	char *email;
+	char *password;
 	char *name;
-	char *bookname;
-	unsigned int tag;
 	struct Student *next;
-}student;
+}Student;
 
-int store_student(FILE *file);
-
-
-int load_student(FILE *file);
+int store_student(FILE *file, Student *head_book);
 
 
+int load_student(FILE *file, Student *head_book);
 
-int registration(Student student);
 
 
-int remove_student(Student student);
+
+
+
+void insert(Student *, Student *);
+
+int login(Student *head);
 
 
 
