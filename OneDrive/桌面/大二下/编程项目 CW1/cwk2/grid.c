@@ -2,12 +2,17 @@
 
 #include <stdio.h>
 
+
 int size;
 int space;
 
 int load_data() {
+	//printf("in load\n");
 	FILE *file = fopen("data.txt", "r");
-	fscanf(file, "%d", size);
+	//printf("in file\n");
+	fscanf(file, "%d", &size);
+	//printf("%d\n", size);
+	//printf("in size\n");
 	/*if (size >= 0){
 		GRID_SIZE = size;//×öÅÐ¶Ï return 1;	
 		}
@@ -15,28 +20,45 @@ int load_data() {
 		printf("Invalid data 'size'.\n");
 		return 1;
 	}*/
-	fscanf(file, "%c", space);
-	for (int i=0; i<GRID_SIZE; i++) {
-		for (int j=0; j<GRID_SIZE; j++) {
-			grid[i][j] = fgetc(file);
+	//printf("in c\n");
+	for (int i=0; i<size; i++) {
+		for (int j=0; j<size; j++) {
+			fscanf(file, "%d", &grid[i][j]);
 		}
-	} 
+	}
+	
+	/*printf("%d\n", size);
+	for (int i=0; i<size; i++) {
+		for (int j=0; j<size; j++) {
+			printf("%d", grid[i][j]);
+		}
+		printf("\n");
+	}*/
 	fclose(file);
-	return 0;
+	//printf(" in close\n");
+	return size;
 } 
 
 int store_data() {
 	FILE *file = fopen("data.txt", "w");
-	if (GRID_SIZE >= 0)
-	fprintf(file, "%d\n", GRID_SIZE);
+	if (size >= 0)
+	fprintf(file, "%d\n", size);
 	else {
-	printf("Invalid data 'GRID_SIZE'.\n");
+	printf("Invalid data 'SIZE'.\n");
 	return 1;
 	}
-	for (int i=0; i<GRID_SIZE; i++) {
-		for (int j=0; j<GRID_SIZE; j++) {
-			fprintf(file, "%d", grid[i][j]);
+	//printf("%d\n", size);
+	for (int i=0; i<size; i++) {
+		for (int j=0; j<size; j++) {
+			printf("%d ", grid[i][j]);
 		}
+		printf("\n");
+	}
+	for (int i=0; i<size; i++) {
+		for (int j=0; j<size; j++) {
+			fprintf(file, "%d ", grid[i][j]);
+		}
+		fprintf(file, "\n");
 	}
 	fclose(file);
 	return 0;
@@ -109,46 +131,57 @@ void copy_grid(int src[GRID_SIZE][GRID_SIZE], int dest[GRID_SIZE][GRID_SIZE]) {
 int initialize_grid() {
 	int a = 1;
 	int choise;
-	int choise1;
-	int step;
-	while(choise >0) {
+
+	while(a >0) {
 		printf("Welcome to Conways' game of life.\n");
 		printf("Please choose one way to start your game:\n");
 		printf("1. Start with data stored before.\n");
 		printf("2. Start with a new universe.\n");
 		printf("Press '1' or '2' to continue:");
-		scanf("%d", choise);
-		if (choise == 1 || choise == 2) {
-			switch (choise) {
-				case 1:{
-					load_data();
-				}break;
-				case 2:{
-					for (int i=0; i<GRID_SIZE; i++) {
-						for (int j=0; j<GRID_SIZE; j++) {
-							grid[i][j] = 0;
-						}
-					}
-				}break;
-			}
-			printf("Do you want to set the step(generation) of the game?\n");
-			printf("1. Yes\n");
-			printf("1. No\n");
-			scanf("%d", choise1);
-			if (choise1 == 1 || choise1 == 2) {
-				switch (choise1) {
-					case 1:{
-						printf("Type in the step you want to set.\n");
-						scanf("%d",step);
-						break;
-					}
-					case 2:{
-						break;
-					}
+		scanf("%d", &choise);
+		if (choise == 1) {
+			//printf("if\n");
+			size = load_data();
+		}
+		else if (choise == 2) {
+			//printf("else if\n");
+			for (int i=0; i<size; i++) {
+				for (int j=0; j<size; j++) {
+					grid[i][j] = 0;
 				}
 			}
+			printf("Please set the size of the universe:\n");
+			scanf("%d", &size);
 		}
 		else
-		continue;
+			continue;
+		
+		
+		
+		return size;
+			
+			}
+		}
+
+
+int get_steps() {
+	int choise1;
+	int step;
+	int b = 1;
+	while (b>0) {
+		printf("Do you want to set the steps(generation)?\n");
+		printf("1. Yes.\n");
+		printf("2. No.\n");
+		scanf("%d", &choise1);
+		if (choise1 == 1) {
+			printf("Please type in the steps:");
+			scanf("%d", &step);
+		}	
+		else if (choise1 == 2 ) {
+			step == 999;
+		}
+		else
+			continue;
+		return step;
 	}
 }

@@ -7,12 +7,17 @@
 #include <SDL.h>
 
 #include "grid.h"
-
+int size_m;
+int STEP;
+int STEP_N = 0;
 int main(int argc, char *argv) {
-	initialize_grid();
+	size_m = initialize_grid();
+	STEP = get_steps();
+	//printf("%d\n", STEP);
+	//printf("%d\n", size_m);
 	SDL_Init(SDL_INIT_EVERYTHING);
 
-	SDL_Window *window = SDL_CreateWindow("Conway's Game of Life", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_RESIZABLE);
+	SDL_Window *window = SDL_CreateWindow("Conway's Game of Life", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, size_m * CELL_SIZE, size_m * CELL_SIZE, SDL_WINDOW_RESIZABLE);
 	SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC);
 
 	// Rectangle around the borders of the usable area.
@@ -24,8 +29,8 @@ int main(int argc, char *argv) {
 	int paused = 1;
 
 	// Set camera to the middle of the usable area.
-	camera_x = (GRID_SIZE / 2) * CELL_SIZE;
-	camera_y = (GRID_SIZE / 2) * CELL_SIZE;
+	camera_x = (0) * CELL_SIZE;
+	camera_y = (0) * CELL_SIZE;
 	camera_spd = 9;
 
 	int frames = SIMULATION_STEP;
@@ -65,7 +70,7 @@ int main(int argc, char *argv) {
 					} else if (event.key.keysym.sym == SDLK_r) {
 						// Reset the simulation- set camera to center of usable area, and reset grid to be empty.
 						paused = 1;
-						camera_x = camera_y = (GRID_SIZE / 2) * CELL_SIZE;
+						camera_x = camera_y = (0) * CELL_SIZE;
 						int nothing[GRID_SIZE][GRID_SIZE] = {0};
 						copy_grid(nothing, grid);
 					} else if (event.key.keysym.sym == SDLK_o) {
@@ -93,8 +98,15 @@ int main(int argc, char *argv) {
 
 		if (!paused) {
 			if (frames == 0) {
+				STEP_N++;
+				if(STEP_N <= STEP) {
+				
 				update_cells();		
-				frames = SIMULATION_STEP;
+				frames = SIMULATION_STEP;}
+				else {
+					paused = !paused;
+					frames = 0;
+				}
 			} else {
 				frames--;
 			}
@@ -136,6 +148,7 @@ int main(int argc, char *argv) {
 		// Render everything to the screen.
 		SDL_RenderPresent(renderer);
 	}
+	store_data();
 
 	// Free stuff.
 	

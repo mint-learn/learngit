@@ -19,7 +19,7 @@ int camera_x, camera_y, camera_spd;
 int load_data();
 int store_data();
 int initialize_grid();
-
+int get_steps();
 
 void update_cells();
 void render_cells(SDL_Renderer *renderer, int paused);
