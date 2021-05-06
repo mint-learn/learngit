@@ -4,11 +4,11 @@
 CPP      = g++.exe
 CC       = gcc.exe
 WINDRES  = windres.exe
-OBJ      = sdl.o
-LINKOBJ  = sdl.o
-LIBS     = -L"F:/±‡“Î∆˜dev/Dev-Cpp/MinGW64/lib" -L"F:/±‡“Î∆˜dev/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib" -static-libgcc -lmingw32 -lSDL2main -lSDL2
-INCS     = -I"F:/±‡“Î∆˜dev/Dev-Cpp/MinGW64/include" -I"F:/±‡“Î∆˜dev/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"F:/±‡“Î∆˜dev/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include"
-CXXINCS  = -I"F:/±‡“Î∆˜dev/Dev-Cpp/MinGW64/include" -I"F:/±‡“Î∆˜dev/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"F:/±‡“Î∆˜dev/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"F:/±‡“Î∆˜dev/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++"
+OBJ      = grid.o main.o
+LINKOBJ  = grid.o main.o
+LIBS     = -L"E:/±‡“Î∆˜dev/Dev-Cpp/MinGW64/lib" -L"E:/±‡“Î∆˜dev/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib" -static-libgcc -lmingw32 -lSDL2main -lSDL2
+INCS     = -I"E:/±‡“Î∆˜dev/Dev-Cpp/MinGW64/include" -I"E:/±‡“Î∆˜dev/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"E:/±‡“Î∆˜dev/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include"
+CXXINCS  = -I"E:/±‡“Î∆˜dev/Dev-Cpp/MinGW64/include" -I"E:/±‡“Î∆˜dev/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"E:/±‡“Î∆˜dev/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"E:/±‡“Î∆˜dev/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++"
 BIN      = sdl.exe
 CXXFLAGS = $(CXXINCS) -std=c99
 CFLAGS   = $(INCS) -std=c99
@@ -24,5 +24,8 @@ clean: clean-custom
 $(BIN): $(OBJ)
 	$(CC) $(LINKOBJ) -o $(BIN) $(LIBS)
 
-sdl.o: sdl.c
-	$(CC) -c sdl.c -o sdl.o $(CFLAGS)
+grid.o: grid.c
+	$(CC) -c grid.c -o grid.o $(CFLAGS)
+
+main.o: main.c
+	$(CC) -c main.c -o main.o $(CFLAGS)
