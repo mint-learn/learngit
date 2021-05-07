@@ -13,13 +13,11 @@ int load_data() {
 	fscanf(file, "%d", &size);
 	//printf("%d\n", size);
 	//printf("in size\n");
-	/*if (size >= 0){
-		GRID_SIZE = size;//×öÅÐ¶Ï return 1;	
-		}
-	else {
+	if (size <= 1){
 		printf("Invalid data 'size'.\n");
 		return 1;
-	}*/
+		}
+		
 	//printf("in c\n");
 	for (int i=0; i<size; i++) {
 		for (int j=0; j<size; j++) {
@@ -41,7 +39,7 @@ int load_data() {
 
 int store_data() {
 	FILE *file = fopen("data.txt", "w");
-	if (size >= 0)
+	if (size >= 2)
 	fprintf(file, "%d\n", size);
 	else {
 	printf("Invalid data 'SIZE'.\n");
@@ -131,6 +129,7 @@ void copy_grid(int src[GRID_SIZE][GRID_SIZE], int dest[GRID_SIZE][GRID_SIZE]) {
 int initialize_grid() {
 	int a = 1;
 	int choise;
+	int c = 1;
 
 	while(a >0) {
 		printf("Welcome to Conways' game of life.\n");
@@ -150,8 +149,18 @@ int initialize_grid() {
 					grid[i][j] = 0;
 				}
 			}
+			while(c > 0) {
 			printf("Please set the size of the universe:\n");
 			scanf("%d", &size);
+			if (size >= 2) {
+				c = -1;
+				break;
+			}
+			else {
+				printf("Invalid data 'size', please enter again:\n");
+				continue;
+			}
+			}
 		}
 		else
 			continue;
@@ -178,7 +187,7 @@ int get_steps() {
 			scanf("%d", &step);
 		}	
 		else if (choise1 == 2 ) {
-			step == 999;
+			step = 999;
 		}
 		else
 			continue;

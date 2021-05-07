@@ -29,8 +29,8 @@ int main(int argc, char *argv) {
 	int paused = 1;
 
 	// Set camera to the middle of the usable area.
-	camera_x = (0) * CELL_SIZE;
-	camera_y = (0) * CELL_SIZE;
+	camera_x = (GRID_SIZE / 2) * CELL_SIZE;
+	camera_y = (GRID_SIZE / 2) * CELL_SIZE;
 	camera_spd = 9;
 
 	int frames = SIMULATION_STEP;
